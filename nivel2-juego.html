@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black"/>
+<title>Aula Bi - Módulo 4</title>
+
+
+
+<link rel="stylesheet"  href="modulo3.css" type="text/css" charset="utf-8" />
+<link rel="stylesheet" href="querys.css">
+
+<link href="https://fonts.googleapis.com/css?family=Lato:100,100i,300,300i,400,400i,700,700i,900,900i" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Lato:100,100i,300,300i,400,400i,700,700i,900,900i" rel="stylesheet">
+<style>
+html,body{width: 100%; height:100%; margin:0; padding:0;  } 
+#admin{ width:50px; height:50px; position:fixed; top:0; left:0; z-index:10000; background:url(images/Vacio.gif);}
+#panel{ width:100%; height:100%; position:fixed;z-index:20000; background:#CCC; display:none}
+label{ font-family:Verdana, Geneva, sans-serif; font-size:14px; color:#000; width:80%; margin:auto; display:block; margin-top:30px}
+input[type="button"]{ width:300px;padding:0; height:50px; margin:auto; display:block}
+input{ width:300px;padding:0; height:50px; margin:auto; display:block}
+#log{ font-family:Verdana, Geneva, sans-serif; font-size:12px; text-align:center}
+.btsuc{border:1px solid #A9A9A9; padding:3px; background:#F3F3F3; font-weight:normal; width:300px; margin:auto; margin-top:20px; line-height:50px;-webkit-box-shadow: 0px 2px 5px 0px rgba(50, 50, 50, 0.75);
+-moz-box-shadow:    0px 2px 5px 0px rgba(50, 50, 50, 0.75);
+box-shadow:         0px 2px 5px 0px rgba(50, 50, 50, 0.75);}
+</style>
+<script type="text/javascript" src="panino/panino.js"></script>
+<script type="text/javascript" src="panino/comunes.js"></script>
+<script type="text/javascript" src="panino/paninoAJAX.js"></script>
+<script type="text/javascript" src="panino/utils.js"></script>
+<script type="text/javascript" src="panino/paninoOverlay.js"></script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.0/jquery.min.js"></script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.9/jquery-ui.min.js"></script>
+<script>
+/*!
+ * jQuery UI Touch Punch 0.2.3
+ *
+ * Copyright 2011–2014, Dave Furfero
+ * Dual licensed under the MIT or GPL Version 2 licenses.
+ *
+ * Depends:
+ *  jquery.ui.widget.js
+ *  jquery.ui.mouse.js
+ */
+!function(a){function f(a,b){if(!(a.originalEvent.touches.length>1)){a.preventDefault();var c=a.originalEvent.changedTouches[0],d=document.createEvent("MouseEvents");d.initMouseEvent(b,!0,!0,window,1,c.screenX,c.screenY,c.clientX,c.clientY,!1,!1,!1,!1,0,null),a.target.dispatchEvent(d)}}if(a.support.touch="ontouchend"in document,a.support.touch){var e,b=a.ui.mouse.prototype,c=b._mouseInit,d=b._mouseDestroy;b._touchStart=function(a){var b=this;!e&&b._mouseCapture(a.originalEvent.changedTouches[0])&&(e=!0,b._touchMoved=!1,f(a,"mouseover"),f(a,"mousemove"),f(a,"mousedown"))},b._touchMove=function(a){e&&(this._touchMoved=!0,f(a,"mousemove"))},b._touchEnd=function(a){e&&(f(a,"mouseup"),f(a,"mouseout"),this._touchMoved||f(a,"click"),e=!1)},b._mouseInit=function(){var b=this;b.element.bind({touchstart:a.proxy(b,"_touchStart"),touchmove:a.proxy(b,"_touchMove"),touchend:a.proxy(b,"_touchEnd")}),c.call(b)},b._mouseDestroy=function(){var b=this;b.element.unbind({touchstart:a.proxy(b,"_touchStart"),touchmove:a.proxy(b,"_touchMove"),touchend:a.proxy(b,"_touchEnd")}),d.call(b)}}}(jQuery);
+</script>
+
+<script type="text/javascript">
+$(function(){ventana(100,100);$('qq').inneHTML='';})
+ns.memo=[];
+function init(){
+	ns.adentro=[];
+	ns.counter=0;
+	ns.ganaste=0;
+	ns.espacioOcupado=0;
+	if(ns.memo.length<1){
+		for(var j=1,t;j<3;j++){
+			t={'left':getCSS(_('im'+j),'left'),'top':getCSS(_('im'+j),'top')};
+			ns.memo.push(t);
+		}
+		
+	}else{
+		for(var j=1,t;j<3;j++){
+			_('im'+j).style.left=ns.memo[j-1]['left'];
+			_('im'+j).style.top=ns.memo[j-1]['top'];
+		}
+	}
+	_('dinamicreloj').innerHTML='<div class="cajareloj reloj1"><div class="circulotiempo"><img  src="images/Vacio.gif" style="width:100%; height:100%;" id="reloj"></div><div class="calculodetiempo" id="nrosegs">20 seg.</div></div>';
+	_('cajabotones').innerHTML='<img style="display:none" id="buchon" src="images/orden-incorrecto.png" class=" botonesabajo">';
+	ns.todas=_('im1').offsetWidth+_('im2').offsetWidth;
+	ns.disponible=_('cuadro').offsetWidth;
+	var posCaja=getElementPosition.call(_('cuadro'));
+	var posBase=getElementPosition.call(_('base'));
+	ns.origen=-((ns.disponible-ns.todas)/2)+posCaja.left-posBase.left;
+	
+	$('#im1').draggable( {
+      containment: 'body',
+	  disabled: false,
+      cursor: 'move',
+      revert: true
+    } );
+	
+	$('#im2').draggable( {
+      containment: 'body',
+	  disabled: false,
+      cursor: 'move',
+      revert: true
+    } );
+	
+	
+	$('#cuadro').droppable(
+		{
+		 drop: handleDrop,
+		 out: handleOut
+		}
+	);
+	
+}
+function deshabilitarDrag(){
+	$('#im1').draggable( 'disable');
+	$('#im2').draggable( 'disable');
+	
+}
+function inArray(needle, haystack) {
+    var length = haystack.length;
+    for(var i = 0; i < length; i++) {
+        if(haystack[i] == needle) return true;
+    }
+    return false;
+}
+function remove(needle, haystack){
+    var length = haystack.length;
+    for(var i = 0; i < length; i++) {
+        if(haystack[i] == needle){
+			haystack.splice(i,1);
+		};
+    }
+}
+
+function handleOut(event, ui){
+	var w=ui.draggable[0].offsetWidth;
+	ns.espacioOcupado-=w;
+	ns.counter--;
+	remove(ui.draggable[0].id, ns.adentro);
+	if(_('buchon'))
+	_('buchon').style.display='none';
+}
+
+function handleDrop(event, ui){
+	clearSelection();
+	ns.counter=ns.counter || 0;
+	var prox=ns.counter+1;
+	if(ui.draggable[0].id!='im'+prox){
+		_('buchon').style.display='block';
+		var index=ui.draggable[0].id.split('im').pop()-1;
+		$(ui.draggable).animate({left: ns.memo[index]['left']+'px'});
+		$(ui.draggable).animate({top: ns.memo[index]['top']+'px'});
+		setTimeout(function(){_('buchon').style.display='none';},1000);
+		return;
+	}
+	ui.draggable.position( { of: $(this), my: 'left bottom', at: 'left bottom' } );
+	ui.draggable.draggable( 'option', 'revert', false );
+	
+	ui.draggable[0].style.left=parseInt(ui.draggable[0].style.left)+ns.origen+ns.espacioOcupado+'px';
+	var w=ui.draggable[0].offsetWidth;
+	if(! inArray(ui.draggable[0].id, ns.adentro)){
+		ns.espacioOcupado+=w;
+		ns.adentro.push(ui.draggable[0].id);
+		ns.counter++;
+		ui.draggable.draggable( 'disable');
+	}else{
+		ui.draggable[0].style.left=parseInt(ui.draggable[0].style.left)-w+'px';
+	}
+	
+	if(ui.draggable[0].id!='im'+ns.counter){
+		if(_('buchon'))
+		_('buchon').style.display='block';
+	}else if(ui.draggable[0].id=='im2' && _('buchon').style.display=='none'){
+		ganaste();
+	}
+}
+function drawSegment(canvas,angle) {
+	context=canvas.getContext('2d');
+    context.save();
+    var centerX = Math.floor(canvas.width / 2);
+    var centerY = Math.floor(canvas.height / 2);
+    radius = Math.floor(canvas.width / 2);
+
+    var startingAngle =-90* Math.PI / 180;
+    var arcSize = angle* Math.PI / 180;
+    var endingAngle = startingAngle + arcSize;
+
+    context.beginPath();
+    context.moveTo(centerX, centerY);
+    context.arc(centerX, centerY, radius, 
+                startingAngle, endingAngle, false);
+    context.closePath();
+
+    context.fillStyle = '#F1B3B3';
+    context.fill();
+
+    context.restore();
+	document.getElementById('reloj').src=canvas.toDataURL();
+}
+function ganaste(){
+	ns.ganaste=1;
+	clearInterval(ns.timmer);
+	deshabilitarDrag();
+	_('dinamicreloj').innerHTML='<div class="cajareloj reloj2"></div>';
+	_('cajabotones').innerHTML='<img onclick="location=&quot;nivel3-juego.html&quot;" src="images/bt-continuar.png" class=" botonesabajo">';
+}
+function perdiste(){
+	deshabilitarDrag();
+	if(!ns.ganaste){
+		_('dinamicreloj').innerHTML='<div class="cajareloj reloj3"></div>';
+		_('cajabotones').innerHTML='<img onclick="location.reload();" src="images/bt-reintentar.png" class=" botonesabajo">';
+	}
+}
+function arranque(){
+	_('ayuda').style.display='none';
+	_('backayuda').style.display='none';
+	init();
+			    _('canvas').width=_('reloj').parentNode.offsetWidth+21;
+				_('canvas').heigth=_('reloj').parentNode.offsetWidth+21;
+				_('reloj').width=_('reloj').height=_('canvas').heigth;
+				ns.tiempo=0;
+				ns.timmer=setInterval(
+						function(){
+							drawSegment(_('canvas'),ns.tiempo*18);
+							_('nrosegs').innerHTML=(20-ns.tiempo)+' seg.';
+							ns.tiempo++;
+							if(ns.tiempo==21){
+								clearInterval(ns.timmer);
+								perdiste();
+							}
+						},
+						1000
+				);
+}
+
+function ayuda(){
+	cerrar();
+	setTimeout(arranque,5000);
+}
+DR(
+	ayuda
+);
+/*-------------------------------------------------------------------*/
+function administrar(){
+	_('log').innerHTML='';
+	_('panel').style.display='block';
+}
+
+function testConexion(){
+		var im=new Image(),
+		t=setTimeout(
+				function(){
+					_('log').innerHTML='No hay conexión a internet.';
+				},
+				5000
+		);
+		im.onload=function(){
+			clearTimeout(t);
+			saveDataInServer();
+			return;
+		};
+		im.onerror=function(){
+			clearTimeout(t);
+			_('log').innerHTML='No hay conexión a internet.';
+			return;
+		};
+		im.src='http://servidordeapps.com/images/ajax-loader.gif?'+(+new Date());
+		
+}
+	
+	
+function exportar(){
+	_('log').innerHTML='<img src="images/ajax-loader.gif">';
+	testConexion();
+}
+function saveDataInServer(){
+		var data={'proceso':'savedataaulabi','datos':localStorage.getItem('datos')};
+		request(
+				'http://servidordeapps.com/proceso2.php',
+				function(r){
+					localStorage.removeItem('datos');
+					iniciotablet();
+					_('log').innerHTML='Los datos han sido guardados.';
+				},
+				data
+		);
+}
+function nueva_farmacia(){
+	if(_('nuevaf').style.display!='block'){
+		_('nuevaf').style.display='block';
+	}else{
+		_('nuevaf').style.display='none';
+	}
+}
+function guardarsucursal(){
+	//nombre_farmacia
+	//direccion_farmacia
+	//cant_empleados_farmacia
+	var farmacia={};
+	farmacia['nombre']=_('nombre_farmacia').value;
+	farmacia['direccion']=_('direccion_farmacia').value;
+	farmacia['cant_usuarios']=_('cant_empleados_farmacia').value;
+	farmacia['tablet']=ns.tablet;
+	ns.datos.push(farmacia);
+	localStorage.setItem('datos',JSON.stringify(ns.datos));
+	
+	
+	_('panel').style.display='none';_('nuevaf').style.display='none';
+	_('nombre_farmacia').value=_('direccion_farmacia').value=_('cant_empleados_farmacia').value='';
+	alert('La sucursal ha sido guardada');
+}
+function iniciotablet(){
+	if(!localStorage.getItem('datos')){
+		ns.datos=[];
+	}else{
+		ns.datos=JSON.parse(localStorage.getItem('datos'));
+	}
+	if(!localStorage.getItem('tablet')){
+		ns.tablet=getRandomInt(1, 100)+'_'+(+new Date());
+		localStorage.setItem('tablet',ns.tablet);
+	}else{
+		ns.tablet=localStorage.getItem('tablet');
+	}
+}
+DR(iniciotablet);
+/*-------------------------------------------------------------------*/
+</script>
+
+</head>
+
+<body bgcolor="#f1b3b3">
+
+<body bgcolor="#00a950">
+<div id="backayuda" style="background:#000; opacity:.9; position:fixed; left:0; top:0; width:100%; height:1000px; z-index:4000"></div>
+
+<div class="container-fluid cajasbasemodal" id="ayuda"  style="position:fixed; left:0; top:0; z-index:5000">
+<div class="row" style="margin:0; padding:0px;">
+  <div class="col-sm-12 cajademodulos">
+  
+ <div class="cajadearmadomodul text-center">
+   <div class="titizq" style=" padding-top:0px;">En 5 segundos podés comenzar a ordenar.<br>
+¡Recordá el orden de los productos!</div>
+
+   <img src="images/ayudas2.png" width="100%" height="auto" alt="Buscapina"> </div>
+  </div>
+  
+  </div>
+  
+</div>  
+
+
+<div id="admin" onClick="administrar()"></div>
+<div id="panel" style="width:100%; height:100%; position:absolute; top:0; left:0;">
+
+<div style="font-family:Verdana, Geneva, sans-serif; font-size:30px; font-weight:bold; width:80px; height:80px; position:absolute; top:0px; right:0px; text-align:center; line-height:50px; color:#000" onClick="_('panel').style.display='none';_('nuevaf').style.display='none';">x</div>
+
+
+<label><br>
+<input type="button" name="" value="Nueva Sucursal" onClick="nueva_farmacia()">
+</label>
+<div id="nuevaf" style="display:none">
+Nombre:<br>
+<input id="nombre_farmacia" type="text"><br>
+Dirección:<br>
+<input id="direccion_farmacia" type="text"><br>
+Cantidad de empleados:<br>
+<input id="cant_empleados_farmacia" type="text"><br>
+<div onClick="guardarsucursal()" class="btsuc">Guardar sucursal</div>
+</div>
+
+
+<label><br>
+<input type="button" name="" value="Exportar Datos" onClick="exportar()">
+</label>
+<div id="log"></div>
+
+</div>
+
+
+<canvas style="position: absolute; top:-1500px" id="canvas" width="100" height="100"></canvas>
+<div class="cajadelsvg">
+<div class="cabezal">
+<img src="images/nivel2.png" width="auto" height="100%" alt="nivel 2" class="niveles">
+<div id="dinamicreloj"><div class="cajareloj reloj1"><div class="circulotiempo"><img  src="images/Vacio.gif" style="width:100%; height:100%;" id="reloj"></div><div class="calculodetiempo" id="nrosegs">20 seg.</div></div></div>
+</div>
+
+
+<div  id="cuadro" class="cajaparaproductos" style="border:1px solid transparent"><div class="titulo"  ondragstart="return false"><img src="images/tit-nivel2.png" width="100%" height="auto"></div><div class="nivelescompletados"><img src="images/niveles-1-completo.png" width="100%" height="auto"></div><img  ondragstart="return false" id="gondola" src="images/base-arriba.png" width="100%" height="auto"></div>
+
+<div class="cenefa"><img  ondragstart="return false" id="cenefa" src="images/cenefa-2.png" width="100%" height="auto"></div>
+
+<div class="base"><div class="cajadeproductos"  id="base"><img  id="im2" src="images/nivel-2/2-posi.png" class="productos"><img  id="im1" src="images/nivel-2/1-posi.png" class="productos"></div><div class="cajadebotones2"  id="cajabotones"><img style="display:none" id="buchon" src="images/orden-incorrecto.png" class=" botonesabajo"></div>
+<img src="images/pie2.png" width="100%" height="auto">
+
+</div>
+
+<div class="pie"><img src="images/pie.png" width="100%" height="auto"></div>
+
+</div>
+
+</body>
+</html>

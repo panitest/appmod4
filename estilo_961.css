@@ -1,0 +1,15 @@
+@media (min-width:961px) { 
+
+.cajadetextohome, .cajafinal{ font-size:1.5em;}
+.btcomenzar{ width:60%;  }
+.btcontinuar{ width:60%;}
+.btvolver{ width:30%;}
+
+.cajadelosalerts{  width:30%;  left:50%;  margin-left:-15%; top:30%; font-size:1em; padding-bottom:7%;}
+
+.cajadelosintros{ width:50%;   left:50%;  margin-left:-25%; top:30%; font-size:1.3em; padding-bottom:8%; padding-top:8%;}
+
+.cajadelsvg{  width:100%; margin-left:-50%;}
+
+
+}
