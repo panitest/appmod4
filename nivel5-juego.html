@@ -68,7 +68,7 @@ function init(){
 	}
 	_('dinamicreloj').innerHTML='<div class="cajareloj reloj1"><div class="circulotiempo"><img  src="images/Vacio.gif" style="width:100%; height:100%;" id="reloj"></div><div class="calculodetiempo" id="nrosegs">20 seg.</div></div>';
 	_('cajabotones').innerHTML='<img style="display:none" id="buchon" src="images/orden-incorrecto.png" class=" botonesabajo">';
-	ns.todas=_('im1').offsetWidth+_('im2').offsetWidth+_('im3').offsetWidth+_('im4').offsetWidth+_('im5').offsetWidth+_('im6').offsetWidth+_('im7').offsetWidth;
+	ns.todas=_('im1').offsetWidth+_('im2').offsetWidth+_('im3').offsetWidth+_('im4').offsetWidth+_('im5').offsetWidth+_('im6').offsetWidth+_('im7').offsetWidth +_('im7').offsetWidth+_('im7').offsetWidth+_('im7').offsetWidth;
 	ns.disponible=_('cuadro').offsetWidth;
 	var posCaja=getElementPosition.call(_('cuadro'));
 	var posBase=getElementPosition.call(_('base'));
@@ -411,7 +411,13 @@ Cantidad de empleados:<br>
 
 <div class="cenefa"><img  ondragstart="return false" id="cenefa"  src="images/cenefa-5.png" width="100%" height="auto"></div>
 
-<div class="base"><div class="cajadeproductos"  id="base"><img id="im7" src="images/nivel-5/7-posi.png" class="productos"><img id="im3" src="images/nivel-5/3-posi.png" class="productos"><img id="im1" src="images/nivel-5/1-posi.png" class="productos"><img id="im6" src="images/nivel-5/6-posi.png" class="productos"><img id="im4" src="images/nivel-5/4-posi.png" class="productos"><img id="im5" src="images/nivel-5/5-posi.png" class="productos"><img  id="im2" src="images/nivel-5/2-posi.png" class="productos"></div><div class="cajadebotones2" id="cajabotones"><img style="display:none" id="buchon" src="images/orden-incorrecto.png" class=" botonesabajo"></div>
+<div class="base"><div class="cajadeproductos"  id="base"><img id="im6" src="images/nivel-5/7-posi.png" class="productos">
+<img id="im4" src="images/nivel-5/3-posi.png" class="productos">
+<img id="im1" src="images/nivel-5/1-posi.png" class="productos">
+<img id="im5" src="images/nivel-5/6-posi.png" class="productos">
+<img id="im3" src="images/nivel-5/4-posi.png" class="productos">
+<img id="im7" src="images/nivel-5/5-posi.png" class="productos">
+<img  id="im2" src="images/nivel-5/2-posi.png" class="productos"></div><div class="cajadebotones2" id="cajabotones"><img style="display:none" id="buchon" src="images/orden-incorrecto.png" class=" botonesabajo"></div>
 <img src="images/pie2.png" width="100%" height="auto">
 
 </div>
